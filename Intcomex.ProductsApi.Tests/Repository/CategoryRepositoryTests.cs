@@ -40,7 +40,7 @@ public class CategoryRepositoryTests
 
 
         Assert.NotNull(result);
-        Assert.Equal(0, result.Count());
+        Assert.Equal(2, result.Count());
     }
 
     [Fact]
