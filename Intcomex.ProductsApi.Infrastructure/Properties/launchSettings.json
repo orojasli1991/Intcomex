@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Incomex.ProductsApi.Infrastructure": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
