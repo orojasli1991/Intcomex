@@ -25,5 +25,5 @@ jobs:
       - name: Build solution
         run: dotnet build Intcomex.ProductsApi.API.sln --no-restore --configuration Release
 
-      - name: Run tests
-        run: dotnet test Intcomex.ProductsApi.API.sln --no-build --verbosity normal
+      - name: Run unit tests
+        run: dotnet test Intcomex.ProductsApi.Tests/Intcomex.ProductsApi.Tests.csproj --configuration Release --no-build --verbosity normal
