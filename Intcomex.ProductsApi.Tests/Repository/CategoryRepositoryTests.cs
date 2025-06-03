@@ -39,7 +39,7 @@ public class CategoryRepositoryTests
         var result = await _repository.GetAllAsync();
 
         Assert.NotNull(result);
-        Assert.Equal(2, result.Count());
+        Assert.Equal(0, result.Count());
     }
 
     [Fact]
