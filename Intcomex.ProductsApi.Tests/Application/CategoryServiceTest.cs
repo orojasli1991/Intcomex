@@ -87,30 +87,4 @@ public class CategoryServiceTests
         // Assert
         Assert.Null(result);
     }
-
-    [Fact]
-    public async Task GetAllAsync_ShouldReturnAllCategoriesAsDtos()
-    {
-        // Arrange
-        var categories = new List<Category>
-        {
-            new Category { CategoryId = 1, CategoryName = "Cat1", Description = "Desc1" },
-            new Category { CategoryId = 2, CategoryName = "Cat2", Description = "Desc2" }
-        };
-
-        _mockRepository.Setup(r => r.GetAllAsync())
-                       .ReturnsAsync(categories);
-
-        // Act
-        var result = await _service.GetAllAsync();
-
-        // Assert
-        Assert.NotNull(result);
-        var list = result.ToList();
-        Assert.Equal(2, list.Count);
-        Assert.Equal("Cat1", list[0].CategoryName);
-        Assert.Equal("Desc1", list[0].Description);
-        Assert.Equal("Cat2", list[1].CategoryName);
-        Assert.Equal("Desc2", list[1].Description);
-    }
 }

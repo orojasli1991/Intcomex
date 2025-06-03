@@ -1,41 +1,69 @@
-﻿using FluentAssertions;
+﻿using Xunit;
+using Moq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Intcomex.ProductsApi.Application.Services;
 using Intcomex.ProductsApi.Domain.Interfaces;
-using Intcomex.ProductsApi.Infrastructure.Repository;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using Microsoft.Extensions.Http;
 using Intcomex.ProductsApi.Domain.Entities;
-using Intcomex.ProductsApi.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Intcomex.ProductsApi.Application.Dto;
+using System.Linq;
 
-
-namespace Intcomex.ProductsApi.Tests.Application
+public class ProductServiceTests
 {
-    public class ProductServiceTests
+    private readonly Mock<IProductRepository> _mockRepo;
+    private readonly ProductService _service;
+
+    public ProductServiceTests()
     {
-        private readonly ProductService _productService;
-        public ProductServiceTests()
+        _mockRepo = new Mock<IProductRepository>();
+        _service = new ProductService(_mockRepo.Object);
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_ReturnsProductDto_WhenProductExists()
+    {
+        // Arrange
+        var product = new Product
         {
-            // Aquí deberías levantar la configuración real si hace falta
-            var services = new ServiceCollection();
+            ProductId = 1,
+            ProductName = "Test",
+            UnitPrice = 100,
+            CategoryId = 2,
+            Category = new Category { Picture = new byte[] { 1, 2, 3 } }
+        };
+        _mockRepo.Setup(r => r.GetProducts(1)).ReturnsAsync(product);
 
-            // Configurar manualmente el repositorio real (opcional si usas DI)
-            services.AddScoped<IProductRepository, ProductRepository>(); // Usa tu implementación real
-            services.AddScoped<ProductService>(); // Servicio que contiene CreateAsync
+        // Act
+        var result = await _service.GetByIdAsync(1);
 
-            // Agrega cualquier configuración adicional necesaria
-            services.AddHttpClient(); // Si tu servicio genera llamadas HTTP
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(1, result.ProductId);
+        Assert.Equal("Test", result.ProductName);
+    }
+    [Fact]
+    public async Task UpdateAsync_ReturnsTrue_WhenProductExists()
+    {
+        var product = new Product { ProductId = 1, ProductName = "Old", UnitPrice = 10, CategoryId = 1 };
+        var dto = new ProductDto { ProductId = 1, ProductName = "New", UnitPrice = 50, CategoryId = 2 };
 
-            var provider = services.BuildServiceProvider();
+        _mockRepo.Setup(r => r.GetProducts(1)).ReturnsAsync(product);
+        _mockRepo.Setup(r => r.UpdateProduct(1, It.IsAny<Product>())).Returns(Task.CompletedTask);
 
-            _productService = provider.GetRequiredService<ProductService>();
-        }
+        var result = await _service.UpdateAsync(dto);
+
+        Assert.True(result);
+    }
+    [Fact]
+    public async Task DeleteAsync_ReturnsTrue_WhenProductExists()
+    {
+        var product = new Product { ProductId = 1 };
+        _mockRepo.Setup(r => r.GetProducts(1)).ReturnsAsync(product);
+        _mockRepo.Setup(r => r.DeleteProduct(1)).Returns(Task.CompletedTask);
+
+        var result = await _service.DeleteAsync(1);
+
+        Assert.True(result);
     }
 
 }
-
-
-
-
