@@ -13,6 +13,7 @@ namespace Intcomex.ProductsApi.Application.Dto
         public int CategoryId { get; set; }
         public string CategoryName { get; set; } = null!;
         public string? Description { get; set; }
+
         public string? PictureUrl { get; set; }
         [JsonIgnore]
         public IFormFile Picture { get; set; }
