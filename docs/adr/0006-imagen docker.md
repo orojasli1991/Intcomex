@@ -4,7 +4,7 @@
 [Aceptada]
 
 ## Fecha
-[20025-06-30]
+[20025-06-03]
 
 ## Contexto
 Se solicicta que sea escalable.

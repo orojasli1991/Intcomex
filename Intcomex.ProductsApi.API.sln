@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		docs\adr\0004-cache en memoria.md = docs\adr\0004-cache en memoria.md
 		docs\adr\0005-uso de bulk insert carga masiva.md = docs\adr\0005-uso de bulk insert carga masiva.md
 		docs\adr\0006-imagen docker.md = docs\adr\0006-imagen docker.md
+		docs\adr\0007-detalle de producto con foto de la categoría..md = docs\adr\0007-detalle de producto con foto de la categoría..md
 		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
 	EndProjectSection
