@@ -93,7 +93,7 @@ builder.Services.AddCors(options =>
 });
 // Configurar URL para HTTP puerto 8080
 builder.WebHost.UseUrls("http://*:8080");
-
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
@@ -117,3 +117,4 @@ app.MapControllers();
 app.UseCors();
 
 app.Run();
+public partial class Program { }

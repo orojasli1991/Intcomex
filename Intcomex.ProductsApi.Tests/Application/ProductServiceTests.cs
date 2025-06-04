@@ -7,16 +7,19 @@ using Intcomex.ProductsApi.Domain.Interfaces;
 using Intcomex.ProductsApi.Domain.Entities;
 using Intcomex.ProductsApi.Application.Dto;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
 
 public class ProductServiceTests
 {
     private readonly Mock<IProductRepository> _mockRepo;
+    private readonly Mock<IMemoryCache> _mockCache;
     private readonly ProductService _service;
 
     public ProductServiceTests()
     {
         _mockRepo = new Mock<IProductRepository>();
-        _service = new ProductService(_mockRepo.Object);
+        _mockCache = new Mock<IMemoryCache>();
+        _service = new ProductService(_mockRepo.Object, _mockCache.Object);
     }
 
     [Fact]

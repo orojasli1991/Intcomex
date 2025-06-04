@@ -2,6 +2,7 @@
 using Intcomex.ProductsApi.Application.Models;
 using Intcomex.ProductsApi.Domain.Entities;
 using Intcomex.ProductsApi.Domain.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,15 @@ namespace Intcomex.ProductsApi.Application.Services
     public class ProductService
     {
         private readonly IProductRepository _repository;
+        private readonly IMemoryCache _cache;
         private readonly Random _random = new();
 
 
-        public ProductService(IProductRepository repository)
+
+        public ProductService(IProductRepository repository, IMemoryCache cache)
         {
             _repository = repository;
+            _cache = cache;
         }
         public async Task<PagedResult<ProductDto>> GetAllAsync(int pageNumber,int pageSize, int? categoryId,string? search)
         {
@@ -110,12 +114,11 @@ namespace Intcomex.ProductsApi.Application.Services
         }
     private async Task<ProductDto> GenerateRandomProduct()
         {
-     
+
             return new ProductDto
             {
-                ProductName = "Product " + Guid.NewGuid().ToString("N"),
+                ProductName = "Product " + Guid.NewGuid().ToString("N"),              
                 CategoryId = await GetRandomCategoryIdAsync(),
-                //CategoryId = _random.Next(5, 6), // toca ir a preguntar q id de categorias existen  
                 SupplierId = _random.Next(1, 4),
                 QuantityPerUnit = $"{_random.Next(1, 100)} unidades",
                 UnitPrice = (decimal)(_random.NextDouble() * 100),
@@ -128,13 +131,36 @@ namespace Intcomex.ProductsApi.Application.Services
         }
         public async Task<List<CategoryDto>> GetAllCategoriesAsync()
         {
-            using var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("https://localhost:44350/Category"); // Cambia la URL si es distinta
+            const string cacheKey = "AllCategories";
 
-            response.EnsureSuccessStatusCode();
+            // 1. Intentar obtener desde caché
+            if (_cache.TryGetValue(cacheKey, out List<CategoryDto> cachedCategories))
+            {
+                return cachedCategories;
+            }
 
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<CategoryDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            try
+            {
+                using var httpClient = new HttpClient();
+
+                var url = " http://host.docker.internal:32774/Category"; // local = https://localhost:44350/Category docker= http://host.docker.internal:32774/Category
+
+                var response = await httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var categories = JsonSerializer.Deserialize<List<CategoryDto>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                _cache.Set(cacheKey, categories, TimeSpan.FromMinutes(1));
+                return categories;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         public async Task<int> GetRandomCategoryIdAsync()
         {
