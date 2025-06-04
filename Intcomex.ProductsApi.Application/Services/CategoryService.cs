@@ -52,7 +52,7 @@ namespace Intcomex.ProductsApi.Application.Services
             if (category.Picture != null && category.Picture.Length > 0)
             {
                 var base64 = Convert.ToBase64String(category.Picture);
-                pictureUrl = $"data:image/jpeg;base64,{base64}"; // Cambia image/jpeg si usas PNG u otro formato
+                pictureUrl = $"data:image/jpeg;base64,{base64}";
             }
             return new CategoryDto
             {

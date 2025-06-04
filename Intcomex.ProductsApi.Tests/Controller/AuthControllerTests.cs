@@ -13,7 +13,7 @@ public class AuthControllerTests
     {
         // Arrange
         var inMemorySettings = new Dictionary<string, string> {
-            {"Jwt:Key", "ThisIsASecretKeyForTesting12345!"}
+            {"Jwt:Key", "bdsgydsgchjbvaucbdosTesting12345!"}
         };
 
         IConfiguration configuration = new ConfigurationBuilder()
