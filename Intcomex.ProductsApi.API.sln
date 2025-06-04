@@ -13,6 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intcomex.ProductsApi.Domain
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{D107F4C8-89CC-BEA8-D3D7-CA6B7733353D}"
 	ProjectSection(SolutionItems) = preProject
+		docs\adr\0000-tecnologias utilizadas.md = docs\adr\0000-tecnologias utilizadas.md
 		docs\adr\0001-arquitectura-limpia.md = docs\adr\0001-arquitectura-limpia.md
 		docs\adr\0002-patrones de diseño - copia.md = docs\adr\0002-patrones de diseño - copia.md
 		docs\adr\0003-seguridad jwt.md = docs\adr\0003-seguridad jwt.md
@@ -20,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		docs\adr\0005-uso de bulk insert carga masiva.md = docs\adr\0005-uso de bulk insert carga masiva.md
 		docs\adr\0006-imagen docker.md = docs\adr\0006-imagen docker.md
 		docs\adr\0007-detalle de producto con foto de la categoría..md = docs\adr\0007-detalle de producto con foto de la categoría..md
+		docs\adr\0008-Clonar, construir y ejecutar localmente..md = docs\adr\0008-Clonar, construir y ejecutar localmente..md
 		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
 	EndProjectSection
